@@ -2,7 +2,7 @@
 
 abstract class Model{
     //infos de la BDD
-    private string $host = '172.16.238.10:3306' ;
+    private string $host = '172.16.238.10' ;
     private string $db_name = 'quizooo';
     private string $db_user = 'quizooo';
     private string $db_password = 'quizooo';
@@ -57,7 +57,7 @@ abstract class Model{
         $this->_connexion = null;
 
         try {
-            $this->_connexion = new PDO('mysql:host='. $this->host . ';dbname:' . $this->db_name, $this->db_user, $this->db_password);
+            $this->_connexion = new PDO("mysql:host=". $this->host . ";dbname=" . $this->db_name, $this->db_user, $this->db_password);
             $this->_connexion->exec('set names utf8');
         } catch (PDOException $exception) {
             echo 'Erreur de connexion à la BDD : '. $exception->getMessage();
@@ -65,7 +65,7 @@ abstract class Model{
     }
 
     public function getAll(){
-        $sql = "SELECT * FROM " . $this->table;
+        $sql = "SELECT * FROM " . $this->getTable();
         $query = $this->_connexion->prepare($sql);
         $query->execute();
         return $query->fetchAll();
